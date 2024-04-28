@@ -15,8 +15,37 @@ namespace _12_1
         Point<T>? end = null;
         int count = 0;
 
-        // Свойства
+        // Свойство
         public int Count => count;
+
+        // Конструкторы
+        public MyList() { }
+        public MyList(int size)
+        {
+            if (size < 0) throw new Exception("Размер списка не может быть меньше 0!");
+            beg = MakeRandomData();
+            end = beg;
+            for (int i = 1; i < size; i++)
+            {
+                T newItem = MakeRandomItem();
+                AddToEnd(newItem);
+            }
+            count = size;
+        }
+        public MyList(T[] collection)
+        {
+            if (collection == null)
+                throw new Exception("Коллекция равна null!");
+            if (collection.Length == 0)
+                throw new Exception("Коллекция пуста!");
+            T newData = (T)collection[0].Clone();
+            beg = new Point<T>(newData);
+            end = beg;
+            for (int i = 1; i < collection.Length; i++)
+            {
+                AddToEnd(collection[i]);
+            }
+        }
 
         // Методы и статические функции
         public Point<T> GetBeg()
@@ -67,35 +96,6 @@ namespace _12_1
             {
                 beg = newItem;
                 end = beg;
-            }
-        }
-
-        // Конструкторы
-        public MyList() { }
-        public MyList(int size)
-        {
-            if (size < 0) throw new Exception("Размер списка не может быть меньше 0!");
-            beg = MakeRandomData();
-            end = beg;
-            for (int i = 1; i < size; i++)
-            {
-                T newItem = MakeRandomItem();
-                AddToEnd(newItem);
-            }
-            count = size;
-        }
-        public MyList(T[] collection)
-        {
-            if (collection == null)
-                throw new Exception("Коллекция равна null!");
-            if (collection.Length == 0)
-                throw new Exception("Коллекция пуста!");
-            T newData = (T)collection[0].Clone();
-            beg = new Point<T>(newData);
-            end = beg;
-            for (int i = 1; i < collection.Length; i++)
-            {
-                AddToEnd(collection[i]);
             }
         }
         public void Print()
