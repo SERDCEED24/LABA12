@@ -85,6 +85,43 @@ namespace _12_2
             }
             return false;
         }
+        public bool RemoveData(T data)
+        {
+            Point<T>? current;
+            int index = GetIndex(data);
+            if (table[index] == null)
+                return false;
+            if (table[index].Data.Equals(data))
+            {
+                if (table[index].Next == null)
+                    table[index] = null;
+                else
+                {
+                    table[index] = table[index].Next;
+                    table[index].Prev = null;
+                }
+                return true;
+            }
+            else
+            {
+                current = table[index];
+                while (current != null)
+                {
+                    if (current.Data.Equals(data))
+                    {
+                        Point<T>? prev = current.Prev;
+                        Point<T>? next = current.Next;
+                        prev.Next = next;
+                        current.Prev = null;
+                        if (next != null)
+                            next.Prev = prev;
+                        return true;
+                    }
+                    current = current.Next;
+                }
+            }
+            return false;
+        }
         private int GetIndex(T data)
         {
             return Math.Abs(data.GetHashCode()) % Capacity;
