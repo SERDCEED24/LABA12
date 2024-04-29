@@ -9,7 +9,7 @@ using CarsLibrary;
 
 namespace _12_2
 {
-    public class MyHashTable<T> where T : IInit, ICloneable, new()
+    public class MyHashTableChained<T> where T : IInit, ICloneable, new()
     {
         // Поле
         Point<T>?[] table;
@@ -18,7 +18,7 @@ namespace _12_2
         public int Capacity => table.Length;
 
         // Конструктор
-        public MyHashTable(int length = 10)
+        public MyHashTableChained(int length = 10)
         {
             table = new Point<T>[length];
         }
