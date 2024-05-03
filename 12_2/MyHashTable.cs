@@ -11,6 +11,7 @@ namespace _12_2
     {
         // Поля
         T[] table;
+        bool[] wasDeleted;
         int count = 0;
         double fillRatio;
 
@@ -22,6 +23,7 @@ namespace _12_2
         public MyHashTable(int size = 10, double fillRatio = 0.72)
         {
             table = new T[size];
+            wasDeleted = new bool[size];
             this.fillRatio = fillRatio;
         }
 
@@ -37,26 +39,37 @@ namespace _12_2
                 return false;
             count--;
             table[index] = default;
+            wasDeleted[index] = true;
             return true;
         }
         public void Print()
         {
-            int i = 0;
-            foreach (T item in table)
+            if (Capacity > 0)
             {
-                Console.WriteLine($"{i}:{item}");
-                i++;
+                int i = 0;
+                foreach (T item in table)
+                {
+                    Console.WriteLine($"{i}: {item}");
+                    i++;
+                }
             }
+            else
+                Console.WriteLine("Таблица пустая!");
         }
         public void AddItem(T item)
         {
             if ((double)Count / Capacity > fillRatio)
             {
-                T[] temp = (T[])table.Clone();
-                table = new T[temp.Length * 2];
+                T[] tempTable = (T[])table.Clone();
+                table = new T[tempTable.Length * 2];
+                bool[] tempWD = (bool[])wasDeleted.Clone();
+                wasDeleted = new bool[tempWD.Length * 2];
                 count = 0;
-                for (int i = 0; i < temp.Length; i++)
-                    AddData(temp[i]);
+                for (int i = 0; i < tempTable.Length; i++)
+                {
+                    AddData(tempTable[i]);
+                    wasDeleted[i] = tempWD[i];
+                }
             }
             AddData(item);
         }
@@ -91,9 +104,9 @@ namespace _12_2
         public int FindItem(T data)
         {
             int index = GetIndex(data);
-            if (table[index] != null)
+            if (table[index] == null && !wasDeleted[index])
                 return -1;
-            if (table[index].Equals(data))
+            if (table[index] != null && table[index].Equals(data))
                 return index;
             else
             {
