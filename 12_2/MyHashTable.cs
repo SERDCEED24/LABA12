@@ -44,17 +44,12 @@ namespace _12_2
         }
         public void Print()
         {
-            if (Capacity > 0)
+            int i = 0;
+            foreach (T item in table)
             {
-                int i = 0;
-                foreach (T item in table)
-                {
-                    Console.WriteLine($"{i}: {item}");
-                    i++;
-                }
+                Console.WriteLine($"{i}: {item}");
+                i++;
             }
-            else
-                Console.WriteLine("Таблица пустая!");
         }
         public void AddItem(T item)
         {

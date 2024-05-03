@@ -4,6 +4,20 @@ namespace _12_2
 {
     internal class Program
     {
+        static bool ExistAndHasElems(MyHashTable<Car> table)
+        {
+            if (table.Capacity == 0)
+            {
+                Console.WriteLine("Таблицы не существует! Сначала сформируйте её!");
+                return false;
+            }
+            if (table.Count == 0)
+            {
+                Console.WriteLine("Таблица пустая!");
+                return false;
+            }
+            return true;
+        }
         static MyHashTable<Car> GenerateHashTable()
         {
             Console.WriteLine("Введите кол-во элементов в таблице:");
@@ -20,19 +34,18 @@ namespace _12_2
         }
         static MyHashTable<Car> AddElement(MyHashTable<Car> table)
         {
-            Car carToAdd = new Car();
-            carToAdd.RandomInit();
-            table.AddItem(carToAdd);
-            Console.WriteLine("Элемент успешно добавлен в таблицу.");
+            if (ExistAndHasElems(table))
+            {
+                Car carToAdd = new Car();
+                carToAdd.RandomInit();
+                table.AddItem(carToAdd);
+                Console.WriteLine("Элемент успешно добавлен в таблицу.");
+            }
             return table;
         }
         static MyHashTable<Car> DeleteElementByData(MyHashTable<Car> table)
         {
-            if (table.Count == 0)
-            {
-                Console.WriteLine("Таблица пустая!");
-            }
-            else
+            if (ExistAndHasElems(table))
             {
                 Car carForDeletion = new Car();
                 carForDeletion.Init();
@@ -49,11 +62,7 @@ namespace _12_2
         }
         static void Search(MyHashTable<Car> table)
         {
-            if (table.Count == 0)
-            {
-                Console.WriteLine("Таблица пустая!");
-            }
-            else
+            if (ExistAndHasElems(table))
             {
                 Car carToSearch = new Car();
                 carToSearch.Init();
@@ -93,7 +102,8 @@ namespace _12_2
                             table = GenerateHashTable();
                             break;
                         case 2:
-                            table.Print();
+                            if (ExistAndHasElems(table))
+                                table.Print();
                             break;
                         case 3:
                             table = AddElement(table);
