@@ -1,4 +1,5 @@
 ﻿using CarsLibrary;
+using System.Collections.Generic;
 
 namespace _12_2
 {
@@ -20,14 +21,37 @@ namespace _12_2
         }
         static MyHashTable<Car> GenerateHashTable()
         {
+            Random rnd = new Random();
             Console.WriteLine("Введите кол-во элементов в таблице:");
             int size = VHS.Input("Ошибка! Введите целое неотрицательное число!", 0);
             MyHashTable<Car> table = new MyHashTable<Car>(size);
+            int typeOfCar;
             for (int i = 0; i < size; i++)
             {
-                Car tempCar = new Car();
-                tempCar.RandomInit();
-                table.AddItem(tempCar);
+                typeOfCar = rnd.Next(1, 5);
+                switch (typeOfCar)
+                {
+                    case 1:
+                        Car car = new Car();
+                        car.RandomInit();
+                        table.AddItem(car);
+                        break;
+                    case 2:
+                        PassengerCar pcar = new PassengerCar();
+                        pcar.RandomInit();
+                        table.AddItem(pcar);
+                        break;
+                    case 3:
+                        SUV suv = new SUV();
+                        suv.RandomInit();
+                        table.AddItem(suv);
+                        break;
+                    case 4:
+                        Truck truck = new Truck();
+                        truck.RandomInit();
+                        table.AddItem(truck);
+                        break;
+                }
             }
             Console.WriteLine("\nТаблица сгенерирована.");
             return table;

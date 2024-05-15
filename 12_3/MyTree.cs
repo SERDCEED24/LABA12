@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using CarsLibrary;
 
 namespace _12_3
@@ -30,17 +31,17 @@ namespace _12_3
         }
         Point<T>? MakeTree(int length, Point<T>? root)
         {
-            T data = new T();
-            data.RandomInit();
-            Point<T> newItem = new Point<T>(data);
             if (length == 0)
             {
                 return null;
             }
+            T data = new T();
+            data.RandomInit();
+            Point<T> newItem = new Point<T>(data);
             int nl = length / 2;
             int nr = length - nl - 1;
             newItem.Left = MakeTree(nl, newItem.Left);
-            newItem.Right = MakeTree(nl, newItem.Right);
+            newItem.Right = MakeTree(nr, newItem.Right);
             return newItem;
         }
         void Show(Point<T>? point, int spaces = 5)
@@ -48,11 +49,7 @@ namespace _12_3
             if (point != null)
             {
                 Show(point.Left, spaces + 5);
-                for (int i = 0; i < spaces; i++)
-                {
-                    Console.WriteLine(" ");
-                }
-                Console.WriteLine(point.Data);
+                Console.WriteLine(new string(' ', spaces) + point.Data);
                 Show(point.Right, spaces + 5);
             }
         }
@@ -91,6 +88,7 @@ namespace _12_3
                 current.Right = newPoint;
             count++;
         }
+        /*
         void TransformToArray(Point<T>? point, T[] array, ref int current)
         {
             if (point != null)
@@ -112,6 +110,20 @@ namespace _12_3
             {
                 AddPoint(array[i]);
             }
+        }
+        */
+        void TransformPointToFindTree(Point<T>? current)
+        {
+            if (current!= null)
+            {
+                TransformPointToFindTree(current.Left);
+                AddPoint(current.Data);
+                TransformPointToFindTree(current.Right);
+            }
+        }
+        public void TransformToFindTree()
+        {
+            TransformPointToFindTree(root);
         }
     }
 }

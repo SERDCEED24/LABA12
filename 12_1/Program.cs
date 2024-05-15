@@ -6,9 +6,38 @@ namespace _12_1
     {
         static MyList<Car> GenerateList()
         {
+            Random rnd = new Random();
             Console.WriteLine("Введите длину списка:");
             int size = VHS.Input("Ошибка! Введите целое неотрицательное число!", 0);
-            MyList<Car> list = new MyList<Car>(size);
+            MyList<Car> list = new MyList<Car>();
+            int typeOfCar;
+            for (int i = 0; i < size; i++)
+            {
+                typeOfCar = rnd.Next(1, 5);
+                switch(typeOfCar)
+                {
+                    case 1:
+                        Car car = new Car();
+                        car.RandomInit(); 
+                        list.AddToEnd(car);
+                        break;
+                    case 2:
+                        PassengerCar pcar = new PassengerCar();
+                        pcar.RandomInit();
+                        list.AddToEnd(pcar);
+                        break;
+                    case 3:
+                        SUV suv = new SUV();
+                        suv.RandomInit();
+                        list.AddToEnd(suv);
+                        break;
+                    case 4:
+                        Truck truck = new Truck();
+                        truck.RandomInit();
+                        list.AddToEnd(truck);
+                        break;
+                }
+            }
             Console.WriteLine("\nСписок сгенерирован.");
             return list;
         }
@@ -56,21 +85,21 @@ namespace _12_1
                 Console.WriteLine("Введите данные элемента для удаления:");
                 Car car = new Car();
                 car.Init();
-                Point<Car>? Item = list.FindItem(car);
-                if (Item == null)
+                Point<Car>? item = list.FindItem(car);
+                if (item == null)
                 {
                     Console.WriteLine("\nЭлемент с заданными данными не был найден.");
                 }
                 else
                 {
-                    if (Item.Prev == null)
+                    if (item.Prev == null)
                     {
-                        Item.Next = null;
                         list.Clear();
                     }
                     else
                     {
-                        Item.Prev.Next = null;
+                        item.Prev.Next = null;
+                        item.Prev = null;
                     }
                     Console.WriteLine("\nЭлементы были успешно удалены из списка.");
                 }
