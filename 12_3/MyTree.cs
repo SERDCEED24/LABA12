@@ -14,8 +14,9 @@ namespace _12_3
         Point<T>? root = null;
         int count = 0;
 
-        // Свойство
+        // Свойства
         public int Count => count;
+        public Point<T>? Root => root;
 
         // Конструктор
         public MyTree(int length)
@@ -114,7 +115,7 @@ namespace _12_3
         */
         void TransformPointToFindTree(Point<T>? current)
         {
-            if (current!= null)
+            if (current != null)
             {
                 TransformPointToFindTree(current.Left);
                 AddPoint(current.Data);
@@ -124,6 +125,24 @@ namespace _12_3
         public void TransformToFindTree()
         {
             TransformPointToFindTree(root);
+        }
+        public void NumberOfLeavesInBranches(Point<T>? point, ref int k)
+        {
+            if (point != null)
+            {
+                NumberOfLeavesInBranches(point.Left, ref k);
+                if (point.Left == null && point.Right == null)
+                {
+                    k++;
+                }
+                NumberOfLeavesInBranches(point.Right, ref k);
+            }
+        }
+        public int NumberOfLeaves()
+        {
+            int n = 0;
+            NumberOfLeavesInBranches(root, ref n);
+            return n;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace _12_3
         }
         static void PrintNumberOfLeaves(MyTree<Car> tree)
         {
-            Console.WriteLine();
+            Console.WriteLine($"Количество листьев в дереве: {tree.NumberOfLeaves()}");
         }
         static MyTree<Car> DeleteElementByData(MyTree<Car> tree)
         {
