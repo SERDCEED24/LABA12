@@ -18,6 +18,7 @@ namespace _12_4
         // Свойства
         public int Capacity => table.Length;
         public int Count => count;
+        public T[] Table => table;
 
         // Конструктор
         public MyHashTable(int size = 10, double fillRatio = 0.72)

@@ -18,7 +18,7 @@ namespace _12_4
             for (int i = 0; i < length; i++)
             {
                 T item = new T();
-                item.RandomInit(); // Предполагаем, что IInit имеет метод RandomInit
+                item.RandomInit();
                 AddItem(item);
             }
         }
@@ -59,7 +59,7 @@ namespace _12_4
             if (arrayIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(arrayIndex));
             if (array.Length - arrayIndex < count)
-                throw new ArgumentException("The destination array has fewer elements than the collection.");
+                throw new ArgumentException("В конечном массиве меньше элементов чем в исходной коллекции!");
 
             int j = arrayIndex;
             for (int i = 0; i < Capacity; i++)

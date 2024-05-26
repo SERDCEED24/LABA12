@@ -31,7 +31,7 @@ namespace _12_3
         {
             Show(root);
         }
-        Point<T>? MakeTree(int length, Point<T>? root)
+        public Point<T>? MakeTree(int length, Point<T>? root)
         {
             if (length == 0)
             {
@@ -46,7 +46,7 @@ namespace _12_3
             newItem.Right = MakeTree(nr, newItem.Right);
             return newItem;
         }
-        void Show(Point<T>? point, int spaces = 5)
+        public void Show(Point<T>? point, int spaces = 5)
         {
             if (point != null)
             {
@@ -55,7 +55,7 @@ namespace _12_3
                 Show(point.Right, spaces + 5);
             }
         }
-        void AddPoint(T data)
+        public void AddPoint(T data)
         {
             Point<T>? point = root;
             Point<T>? current = null;
@@ -108,6 +108,7 @@ namespace _12_3
                         inS.Push(temp.Right);
                 }
                 root = new Point<T>(outS.Pop().Data);
+                count = 1;
                 while (outS.Count > 0)
                 {
                     item = outS.Pop();
@@ -140,7 +141,7 @@ namespace _12_3
             clonedTree.count = this.count;
             return clonedTree;
         }
-        private Point<T>? ClonePoint(Point<T>? point)
+        public Point<T>? ClonePoint(Point<T>? point)
         {
             if (point == null)
             {
@@ -178,7 +179,7 @@ namespace _12_3
             }
             return isRemoved;
         }
-        private (Point<T>?, bool) RemoveFromPoint(Point<T>? point, T key)
+        public (Point<T>?, bool) RemoveFromPoint(Point<T>? point, T key)
         {
             if (point == null)
             {

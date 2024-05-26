@@ -189,10 +189,10 @@ namespace Test_12_1
 
                 // Assert
                 Assert.AreEqual(list.Count, clonedList.Count);
-                Assert.AreNotSame(list.GetBeg().Data, clonedList.GetBeg().Data); // Ensure deep copy
-                Assert.AreEqual(list.GetBeg().Data, clonedList.GetBeg().Data);   // Ensure data equality
-                Assert.AreNotSame(list.GetBeg().Next.Data, clonedList.GetBeg().Next.Data); // Ensure deep copy for next item
-                Assert.AreEqual(list.GetBeg().Next.Data, clonedList.GetBeg().Next.Data);   // Ensure data equality for next item
+                Assert.AreNotSame(list.GetBeg().Data, clonedList.GetBeg().Data); 
+                Assert.AreEqual(list.GetBeg().Data, clonedList.GetBeg().Data);   
+                Assert.AreNotSame(list.GetBeg().Next.Data, clonedList.GetBeg().Next.Data); 
+                Assert.AreEqual(list.GetBeg().Next.Data, clonedList.GetBeg().Next.Data);   
             }
 
             [TestMethod]
@@ -281,8 +281,8 @@ namespace Test_12_1
                 Assert.AreEqual(cars.Length, list.Count);
                 for (int i = 0; i < cars.Length; i++)
                 {
-                    Assert.AreEqual(cars[i], list.GetBeg().Data); // Assumes list.AddToEnd appends to end, maintaining order
-                    list.RemoveItem(cars[i]); // Remove to check the next item
+                    Assert.AreEqual(cars[i], list.GetBeg().Data); 
+                    list.RemoveItem(cars[i]);
                 }
             }
             [TestMethod]
