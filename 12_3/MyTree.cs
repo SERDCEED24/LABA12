@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -8,7 +9,7 @@ using CarsLibrary;
 
 namespace _12_3
 {
-    public class MyTree<T> where T : IInit, IComparable, new()
+    public class MyTree<T> where T : IInit, ICloneable, IComparable, new()
     {
         // Поля
         Point<T>? root = null;
@@ -59,7 +60,7 @@ namespace _12_3
             Point<T>? point = root;
             Point<T>? current = null;
             bool isExist = false;
-            while (point != null && isExist)
+            while (point != null && !isExist)
             {
                 current = point;
                 if (point.Data.CompareTo(data) == 0)
@@ -89,42 +90,30 @@ namespace _12_3
                 current.Right = newPoint;
             count++;
         }
-        /*
-        void TransformToArray(Point<T>? point, T[] array, ref int current)
+        public void TransformToSearchTree()
         {
-            if (point != null)
+            Stack<Point<T>> inS = new Stack<Point<T>>();
+            Stack<Point<T>> outS = new Stack<Point<T>>();
+            Point<T> item, temp;
+            if (root != null)
             {
-                TransformToArray(point.Left,array, ref current);
-                array[current] = point.Data;
-                current++;
-                TransformToArray(point.Right,array, ref current);
+                inS.Push(root);
+                while (inS.Count > 0)
+                {
+                    temp = inS.Pop();
+                    outS.Push(temp);
+                    if (temp.Left != null)
+                        inS.Push(temp.Left);
+                    if (temp.Right != null)
+                        inS.Push(temp.Right);
+                }
+                root = new Point<T>(outS.Pop().Data);
+                while (outS.Count > 0)
+                {
+                    item = outS.Pop();
+                    AddPoint((T)item.Data);
+                }
             }
-        }
-        public void TransformToFindTree()
-        {
-            T[] array = new T[count];
-            int current = 0;
-            TransformToArray(root, array,ref current);
-            root = new Point<T>(array[0]);
-            count = 0;
-            for (int i = 1; i < array.Length; i++)
-            {
-                AddPoint(array[i]);
-            }
-        }
-        */
-        void TransformPointToFindTree(Point<T>? current)
-        {
-            if (current != null)
-            {
-                TransformPointToFindTree(current.Left);
-                AddPoint(current.Data);
-                TransformPointToFindTree(current.Right);
-            }
-        }
-        public void TransformToFindTree()
-        {
-            TransformPointToFindTree(root);
         }
         public void NumberOfLeavesInBranches(Point<T>? point, ref int k)
         {
@@ -143,6 +132,93 @@ namespace _12_3
             int n = 0;
             NumberOfLeavesInBranches(root, ref n);
             return n;
+        }
+        public MyTree<T> Clone()
+        {
+            MyTree<T> clonedTree = new MyTree<T>(0);
+            clonedTree.root = ClonePoint(this.root);
+            clonedTree.count = this.count;
+            return clonedTree;
+        }
+        private Point<T>? ClonePoint(Point<T>? point)
+        {
+            if (point == null)
+            {
+                return null;
+            }
+            T clonedData = (T)point.Data.Clone();
+            Point<T> clonedPoint = new Point<T>(clonedData);
+            clonedPoint.Left = ClonePoint(point.Left);
+            clonedPoint.Right = ClonePoint(point.Right);
+            return clonedPoint;
+        }
+        void ClearFromPoint(Point<T>? point)
+        {
+            if (point != null)
+            {
+                ClearFromPoint(point.Left);
+                ClearFromPoint(point.Right);
+                point.Left = null;
+                point.Right = null;
+            }
+        }
+        public void Clear()
+        {
+            ClearFromPoint(root);
+            root = null;
+            count = 0;
+        }
+        public bool Remove(T key)
+        {
+            bool isRemoved;
+            (root, isRemoved) = RemoveFromPoint(root, key);
+            if (isRemoved)
+            {
+                count--;
+            }
+            return isRemoved;
+        }
+        private (Point<T>?, bool) RemoveFromPoint(Point<T>? point, T key)
+        {
+            if (point == null)
+            {
+                return (null, false);
+            }
+
+            int compare = key.CompareTo(point.Data);
+
+            if (compare > 0)
+            {
+                (point.Left, var isRemoved) = RemoveFromPoint(point.Left, key);
+                return (point, isRemoved);
+            }
+            else if (compare < 0)
+            {
+                (point.Right, var isRemoved) = RemoveFromPoint(point.Right, key);
+                return (point, isRemoved);
+            }
+            else
+            {
+                if (point.Left == null)
+                {
+                    return (point.Right, true);
+                }
+                else if (point.Right == null)
+                {
+                    return (point.Left, true);
+                }
+                else
+                {
+                    Point<T> minLargerNode = point.Right;
+                    while (minLargerNode.Left != null)
+                    {
+                        minLargerNode = minLargerNode.Left;
+                    }
+                    point.Data = minLargerNode.Data;
+                    (point.Right, var isRemoved) = RemoveFromPoint(point.Right, minLargerNode.Data);
+                    return (point, isRemoved);
+                }
+            }
         }
     }
 }

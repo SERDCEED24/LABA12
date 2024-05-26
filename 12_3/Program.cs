@@ -26,12 +26,35 @@ namespace _12_3
         }
         static void PrintNumberOfLeaves(MyTree<Car> tree)
         {
-            Console.WriteLine($"Количество листьев в дереве: {tree.NumberOfLeaves()}");
+            if (HasElems(tree))
+            {
+                Console.WriteLine($"Количество листьев в дереве: {tree.NumberOfLeaves()}");
+            }
         }
         static MyTree<Car> DeleteElementByData(MyTree<Car> tree)
         {
-            Console.WriteLine();
+            if (HasElems(tree))
+            {
+                Car carToRemove = new Car();
+                carToRemove.Init();
+                bool isRemoved = tree.Remove(carToRemove);
+                if (isRemoved)
+                    Console.WriteLine("\nЭлемент был успешно удалён из дерева поиска!");
+                else
+                    Console.WriteLine("\nЭлемент не был найден в дереве поиска!");
+            }
             return tree;
+        }
+        static MyTree<Car> CreateSearchTree(MyTree<Car> tree)
+        {
+            if (HasElems(tree))
+            {
+                MyTree<Car> searchTree = tree.Clone();
+                searchTree.TransformToSearchTree();
+                Console.WriteLine("Дерево поиска было сформировано.");
+                return searchTree;
+            }
+            return new MyTree<Car>(0);
         }
         static void Main(string[] args)
         {
@@ -40,15 +63,17 @@ namespace _12_3
                          "2. Распечатать дерево.\n" +
                          "3. Найти количество листьев в дереве.\n" +
                          "4. Преобразовать идеально сбалансированное дерево в дерево поиска.\n" +
-                         "5. Удалить из дерева поиска элемент с заданным ключом.\n" +
-                         "6. Удалить дерево из памяти.\n" +
-                         "7. Выход.\n";
+                         "5. Распечатать дерево поиска.\n" +
+                         "6. Удалить из дерева поиска элемент с заданным ключом.\n" +
+                         "7. Удалить дерево из памяти.\n" +
+                         "8. Выход.\n";
             MyTree<Car> tree = new MyTree<Car>(0);
+            MyTree<Car> searchTree = new MyTree<Car>(0);
             int response;
             do
             {
                 Console.WriteLine(Menu);
-                response = VHS.Input("Ошибка! Введите целое число от 1 до 7!", 1, 7);
+                response = VHS.Input("Ошибка! Введите целое число от 1 до 8!", 1, 8);
                 Console.WriteLine();
                 try
                 {
@@ -65,13 +90,27 @@ namespace _12_3
                             PrintNumberOfLeaves(tree);
                             break;
                         case 4:
-                            tree = DeleteElementByData(tree);
+                            searchTree = CreateSearchTree(tree);
                             break;
                         case 5:
-                            tree = DeleteElementByData(tree);
+                            if (searchTree.Count != 0)
+                               searchTree.ShowTree();
+                            else
+                                Console.WriteLine("Ошибка! Попробуйте сформировать дерево поиска!");
                             break;
                         case 6:
-                            tree = DeleteElementByData(tree);
+                            if (searchTree.Count != 0)
+                                searchTree = DeleteElementByData(searchTree);
+                            else
+                                Console.WriteLine("Ошибка! Попробуйте сформировать дерево поиска!");
+                            break;
+                        case 7:
+                            if (HasElems(tree))
+                            {
+                                tree.Clear();
+                                searchTree.Clear();
+                                Console.WriteLine("Дерево удалено из памяти.");
+                            }
                             break;
                     }
                 }
@@ -79,7 +118,7 @@ namespace _12_3
                 {
                     Console.WriteLine(e);
                 }
-            } while (response != 7);
+            } while (response != 8);
         }
     }
 }
