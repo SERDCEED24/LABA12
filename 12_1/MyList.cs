@@ -41,6 +41,7 @@ namespace _12_1
             T newData = (T)collection[0].Clone();
             beg = new Point<T>(newData);
             end = beg;
+            count = 1;
             for (int i = 1; i < collection.Length; i++)
             {
                 AddToEnd(collection[i]);
